@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="index.css" rel="stylesheet">
+    <title>Speech regonition</title>
+</head>
+
+
+<body>
+    <div class="title">
+            <h2>voice Recongnition</h2>
+    </div>
+   
+    <div class="words" >
+        <div class="lines"></div>
+        <ul class="list">
+
+        </ul>
+
+    </div>
+
+    <script>
+        window.SpeechRecognition = window.webkitSpeechRecognition || window.SpeechRecognition;
+        const regonition=new window.SpeechRecognition();
+        regonition.interimResults=true;
+        let li=document.createElement('li');
+        const list=document.querySelector('.words .list');
+        list.appendChild(li);
+        regonition.addEventListener('result',(e)=>
+        {
+            console.log(e.results);
+        const transcript=Array.from(e.results)
+        .map(results=>results[0])
+        .map(results=>results.transcript)
+        .join(' ');
+        li.textContent=transcript;
+        if(e.results[0].isFinal)
+        {
+            li=document.createElement('li');
+            list.appendChild(li);
+        }
+        console.log(transcript);
+        })
+        regonition.addEventListener('end',regonition.start);
+       
+        regonition.start();
+
+    </script>
+</body>
+
+</html>
